@@ -17,6 +17,7 @@ namespace FM.API
         private static System.Timers.Timer _timerExternalAPI;
         private static int _pageAPI = 1;
         private static IUserService _userService;
+        private static Scheduler _scheduler;
 
         public static void Main(string[] args)
         {
@@ -39,6 +40,9 @@ namespace FM.API
             builder.Services.Configure<Auth>(
                 builder.Configuration.GetSection(Auth.AuthSection));
 
+            builder.Services.Configure<Scheduler>(
+                builder.Configuration.GetSection(Scheduler.SchedulerSection));
+
             // Configuración de Entity Framework
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DB"),
@@ -59,6 +63,7 @@ namespace FM.API
             var app = builder.Build();
 
             _userService = builder.Services.BuildServiceProvider().GetService<IUserService>();
+            _scheduler = builder.Services.BuildServiceProvider().GetService<IOptions<Scheduler>>().Value;
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -83,7 +88,7 @@ namespace FM.API
         /// </summary>
         private static void InitExternalAPI()
         {
-            _timerExternalAPI = new System.Timers.Timer(120000);
+            _timerExternalAPI = new System.Timers.Timer(_scheduler.Interval);
             _timerExternalAPI.Elapsed += Timer_Elapsed;
             _timerExternalAPI.Enabled = true;
         }
