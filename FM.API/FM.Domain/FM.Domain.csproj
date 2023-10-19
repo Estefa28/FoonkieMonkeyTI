@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FM.Domain\FM.Domain.csproj" />
-    <ProjectReference Include="..\FM.External.API\FM.External.API.csproj" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>

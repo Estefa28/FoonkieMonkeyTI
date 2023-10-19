@@ -1,5 +1,7 @@
+using FM.EntityFramework;
 using FM.External.API.Interfaces;
 using FM.External.API.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace FM.API
 {
@@ -17,6 +19,14 @@ namespace FM.API
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton<IUserService, UserService>();
+
+            builder.Services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DB"),
+                sqloption =>
+                {
+                    sqloption.EnableRetryOnFailure(3);
+                    sqloption.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName);
+                }));
 
             var app = builder.Build();
 
