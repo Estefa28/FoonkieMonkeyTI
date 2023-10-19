@@ -2,9 +2,9 @@
 using FM.External.API.Models;
 using Newtonsoft.Json;
 
-namespace FM.External.API.Services
+namespace FM.External.API.Implementation
 {
-    public class UserService : IUserService
+    public class UserAPI : IUserAPI
     {
         const string UrlAPI = "https://reqres.in/api/";
         const string GetUsersEndpoint = "users?page=";

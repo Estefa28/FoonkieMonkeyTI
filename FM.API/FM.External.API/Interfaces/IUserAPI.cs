@@ -2,7 +2,10 @@
 
 namespace FM.External.API.Interfaces
 {
-    public interface IUserService
+    /// <summary>
+    /// Definición de métodos API Externa
+    /// </summary>
+    public interface IUserAPI
     {
         Task<UserResponse> GetUsersAsync(int page);
     }

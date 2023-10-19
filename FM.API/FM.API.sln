@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FM.Business", "FM.Business\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FM.External.API", "FM.External.API\FM.External.API.csproj", "{21FF4521-F726-4770-A612-EF410550ADBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FM.Domain", "FM.Domain\FM.Domain.csproj", "{E229BB77-F052-4DE8-B714-9C93F5DEA300}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FM.Domain", "FM.Domain\FM.Domain.csproj", "{E229BB77-F052-4DE8-B714-9C93F5DEA300}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FM.EntityFramework", "FM.EntityFramework\FM.EntityFramework.csproj", "{D81CF0C4-E4C1-48F1-8E19-FD687B8B155F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FM.EntityFramework", "FM.EntityFramework\FM.EntityFramework.csproj", "{D81CF0C4-E4C1-48F1-8E19-FD687B8B155F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

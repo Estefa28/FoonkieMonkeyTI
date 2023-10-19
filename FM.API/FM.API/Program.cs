@@ -3,8 +3,9 @@ using FM.EntityFramework;
 using FM.EntityFramework.Interfaces;
 using FM.EntityFramework.Repositories;
 using FM.External.API.Interfaces;
-using FM.External.API.Services;
+using FM.External.API.Implementation;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FM.API
 {
@@ -19,11 +20,19 @@ namespace FM.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
+            // Configuración de Documentación OpenAPI
+            builder.Services.AddSwaggerGen(options =>
+            {
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
+
+            // Configuración de Secciones appsettings.json
             builder.Services.Configure<Auth>(
-            builder.Configuration.GetSection(Auth.AuthSection));
+                builder.Configuration.GetSection(Auth.AuthSection));
 
+            // Configuración de Entity Framework
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DB"),
                 sqloption =>
@@ -33,7 +42,9 @@ namespace FM.API
                 }));
 
             builder.Services.AddTransient<IUserRepository, UserRepository>();
-            builder.Services.AddSingleton<IUserService, UserService>();
+
+            // Inyección dependencias de API Externa
+            builder.Services.AddSingleton<IUserAPI, UserAPI>();
 
             var app = builder.Build();
 

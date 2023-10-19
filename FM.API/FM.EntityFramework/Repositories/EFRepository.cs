@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FM.EntityFramework.Repositories
 {
+    /// <summary>
+    /// Implementación de Patrón repositorio para uso de Entity Framework
+    /// </summary>
+    /// <typeparam name="Model">EntityBase</typeparam>
     public abstract class EFRepository<Model> : IRepository<Model> where Model : EntityBase
     {
         private readonly ApplicationContext Context;

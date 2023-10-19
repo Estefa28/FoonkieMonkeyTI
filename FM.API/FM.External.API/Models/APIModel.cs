@@ -21,6 +21,9 @@ namespace FM.External.API.Models
         public string Avatar { get; set; }
     }
 
+    /// <summary>
+    /// Clase respuesta para el servicio de obtención de usuarios
+    /// </summary>
     public class UserResponse
     {
         [JsonProperty("page")]
