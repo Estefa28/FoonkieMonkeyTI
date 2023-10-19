@@ -1,7 +1,9 @@
-﻿using FM.Domain.Models;
+﻿using FM.API.Configurations;
+using FM.Domain.Models;
 using FM.EntityFramework.Interfaces;
 using FM.External.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace FM.API.Controllers
 {
@@ -11,11 +13,13 @@ namespace FM.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
+        private readonly Auth _auth;
         
-        public UsersController(IUserService userService, IUserRepository userRepository)
+        public UsersController(IUserService userService, IUserRepository userRepository, IOptions<Auth> auth)
         {
             _userService = userService;
             _userRepository = userRepository;
+            _auth = auth.Value;
         }
 
         [HttpGet]
@@ -29,8 +33,16 @@ namespace FM.API.Controllers
         [Route("{id}")]
         public async Task<ActionResult<UserEntity>> GetUserByIdAsync(int id)
         {
-            var response = _userRepository.Search(id);
-            return Ok(response);
+            var headers = Request.Headers;
+            if (headers.ContainsKey("client_id") && headers.ContainsKey("client_secret"))
+            {
+                if (_auth.ClientId == headers["client_id"] && _auth.ClientSecret == headers["client_secret"])
+                {
+                    var response = _userRepository.Search(id);
+                    return Ok(response);
+                }
+            }
+            return Unauthorized("No tiene autorización"); 
         }
 
         [HttpPost]

@@ -1,3 +1,4 @@
+using FM.API.Configurations;
 using FM.EntityFramework;
 using FM.EntityFramework.Interfaces;
 using FM.EntityFramework.Repositories;
@@ -19,6 +20,9 @@ namespace FM.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.Configure<Auth>(
+            builder.Configuration.GetSection(Auth.AuthSection));
 
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DB"),
