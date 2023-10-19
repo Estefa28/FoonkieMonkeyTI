@@ -1,4 +1,5 @@
 ﻿using FM.Domain.Models;
+using FM.EntityFramework.Interfaces;
 using FM.External.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,37 +10,43 @@ namespace FM.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly IUserRepository _userRepository;
+        
+        public UsersController(IUserService userService, IUserRepository userRepository)
         {
             _userService = userService;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserEntity>>> GetAllUsersAsync(int page, int pageSize = 5)
+        public async Task<ActionResult<List<UserEntity>>> GetAllUsersAsync(int page = 1, int pageSize = 5)
         {
-            var response = await _userService.GetUsersAsync(page);
-            var list = response.Users;
-            return Ok(list.Skip(page*pageSize-pageSize).Take(pageSize));
+            var response = _userRepository.GetAll(page, pageSize);
+            return Ok(response);
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult<UserEntity>> GetUserByIdAsync(int id)
         {
-            return Ok();
+            var response = _userRepository.Search(id);
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<ActionResult<UserEntity>> CreateUserAsync([FromBody] UserEntity request)
         {
-            return Ok();
+            var response = _userRepository.Add(request);
+            return Ok(response);
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<UserEntity>> UpdateUserAsync(int id, [FromBody] UserEntity request)
         {
-            return Ok();
+            request.Id = id;
+            var response = _userRepository.Update(request);
+            return Ok(response);
         }
     }
 }

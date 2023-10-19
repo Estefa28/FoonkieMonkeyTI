@@ -2,11 +2,8 @@
 
 namespace FM.Domain.Models
 {
-    public class UserEntity
+    public class UserEntity: EntityBase
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Email { get; set; }
 

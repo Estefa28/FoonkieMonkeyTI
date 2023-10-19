@@ -1,4 +1,6 @@
 using FM.EntityFramework;
+using FM.EntityFramework.Interfaces;
+using FM.EntityFramework.Repositories;
 using FM.External.API.Interfaces;
 using FM.External.API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +20,6 @@ namespace FM.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddSingleton<IUserService, UserService>();
-
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DB"),
                 sqloption =>
@@ -27,6 +27,9 @@ namespace FM.API
                     sqloption.EnableRetryOnFailure(3);
                     sqloption.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName);
                 }));
+
+            builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddSingleton<IUserService, UserService>();
 
             var app = builder.Build();
 
