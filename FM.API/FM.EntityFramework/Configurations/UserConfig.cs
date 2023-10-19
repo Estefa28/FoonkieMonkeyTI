@@ -12,7 +12,7 @@ namespace FM.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<UserEntity> entity)
         {
-            entity.ToTable("User", ConfigConstants.Schema);
+            entity.ToTable("Users", ConfigConstants.Schema);
 
             entity.HasIndex(x => x.Id);
             

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FM.Domain\FM.Domain.csproj" />
+    <ProjectReference Include="..\FM.EntityFramework\FM.EntityFramework.csproj" />
     <ProjectReference Include="..\FM.External.API\FM.External.API.csproj" />
   </ItemGroup>
 

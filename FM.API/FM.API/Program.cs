@@ -6,11 +6,18 @@ using FM.External.API.Interfaces;
 using FM.External.API.Implementation;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using FM.Business.Interfaces;
+using FM.Business.Services;
+using Microsoft.Extensions.Options;
 
 namespace FM.API
 {
     public class Program
     {
+        private static System.Timers.Timer _timerExternalAPI;
+        private static int _pageAPI = 1;
+        private static IUserService _userService;
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -46,7 +53,12 @@ namespace FM.API
             // Inyección dependencias de API Externa
             builder.Services.AddSingleton<IUserAPI, UserAPI>();
 
+            // Inyección dependencia capa Business
+            builder.Services.AddTransient<IUserService, UserService>();
+
             var app = builder.Build();
+
+            _userService = builder.Services.BuildServiceProvider().GetService<IUserService>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -59,10 +71,43 @@ namespace FM.API
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
+            InitExternalAPI();
+
             app.Run();
+        }
+
+        /// <summary>
+        /// Iniciar un Timer para ejecutar una tarea cada cierto tiempo
+        /// </summary>
+        private static void InitExternalAPI()
+        {
+            _timerExternalAPI = new System.Timers.Timer(120000);
+            _timerExternalAPI.Elapsed += Timer_Elapsed;
+            _timerExternalAPI.Enabled = true;
+        }
+
+        /// <summary>
+        /// Consulta cada página trayendo los registros encontrados de la API Externa y los almacena en
+        /// la base de datos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static async void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                Console.WriteLine("Consultando");
+                await _userService.UpdateDatabaseAsync(_pageAPI);
+                Console.WriteLine($"Registros obtenidos de la pagina {_pageAPI}");
+                _pageAPI++;
+            }
+            catch (Exception)
+            {
+                _timerExternalAPI.Enabled = false;
+                Console.WriteLine("No hay más registros para consultar");
+            }
         }
     }
 }
