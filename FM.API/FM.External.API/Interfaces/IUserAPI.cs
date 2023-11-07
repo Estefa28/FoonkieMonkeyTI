@@ -3,7 +3,7 @@
 namespace FM.External.API.Interfaces
 {
     /// <summary>
-    /// Definición de métodos API Externa
+    ///  Definition of External API methods
     /// </summary>
     public interface IUserAPI
     {

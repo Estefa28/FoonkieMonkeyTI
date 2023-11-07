@@ -3,7 +3,7 @@
 namespace FM.Domain.Models
 {
     /// <summary>
-    /// Base para entidades de Base de Datos
+    /// Base for Database entities
     /// </summary>
     public abstract class EntityBase
     {

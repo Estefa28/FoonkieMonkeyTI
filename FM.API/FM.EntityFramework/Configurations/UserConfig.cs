@@ -6,7 +6,7 @@ using FM.EntityFramework.Constants;
 namespace FM.EntityFramework.Configurations
 {
     /// <summary>
-    /// Configuración de Entidad User
+    /// User Entity Configuration
     /// </summary>
     public class UserConfig : IEntityTypeConfiguration<UserEntity>
     {

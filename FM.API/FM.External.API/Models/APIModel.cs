@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace FM.External.API.Models
 {
@@ -22,7 +21,7 @@ namespace FM.External.API.Models
     }
 
     /// <summary>
-    /// Clase respuesta para el servicio de obtención de usuarios
+    /// Response class for the user getter service
     /// </summary>
     public class UserResponse
     {

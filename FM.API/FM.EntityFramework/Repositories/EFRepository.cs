@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FM.EntityFramework.Repositories
 {
     /// <summary>
-    /// Implementación de Patrón repositorio para uso de Entity Framework
+    /// Implementation of Repository Pattern for use of Entity Framework
     /// </summary>
     /// <typeparam name="Model">EntityBase</typeparam>
     public abstract class EFRepository<Model> : IRepository<Model> where Model : EntityBase
@@ -22,7 +22,7 @@ namespace FM.EntityFramework.Repositories
         public virtual Model Add(Model model)
         {
             if (model == null)
-                throw new Exception($" El método {nameof(Add)} necesita un modelo");
+                throw new Exception($" The method {nameof(Add)} needs a model");
 
             DbSet.Add(model);
             Complete();
@@ -42,12 +42,12 @@ namespace FM.EntityFramework.Repositories
         public Model Search(int id)
         {
             if (id == 0)
-                throw new Exception(" El id es necesario");
+                throw new Exception("The id is necessary");
 
             var matched = DbSet.FirstOrDefault(x => x.Id == id);
             if (matched == null)
             {
-                throw new Exception("No se encontraron registros");
+                throw new Exception("No records found");
             }
 
             return matched;

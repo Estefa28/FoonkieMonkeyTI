@@ -1,7 +1,7 @@
 ﻿namespace FM.API.Configurations
 {
     /// <summary>
-    /// Información de autenticación basada en la sección "Auth" dentro del appsettings.json
+    /// Authentication information based on the "Auth" section within the appsettings.json
     /// </summary>
     public class Auth
     {

@@ -3,7 +3,7 @@
 namespace FM.Domain.Interfaces
 {
     /// <summary>
-    /// Definición de metodos para patrón repositorio
+    /// Definition of methods for repository pattern
     /// </summary>
     /// <typeparam name="Model">EntityBase</typeparam>
     public interface IRepository<Model> where Model : EntityBase

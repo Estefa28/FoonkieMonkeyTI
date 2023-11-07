@@ -18,14 +18,14 @@ namespace FM.Business.Services
 
         public async Task UpdateDatabaseAsync(int page)
         {
-            var dataApiExterna = await _userAPI.GetUsersAsync(page);
+            var dataExternalApi = await _userAPI.GetUsersAsync(page);
 
-            if (page > dataApiExterna.TotalPages)
+            if (page > dataExternalApi.TotalPages)
             {
-                throw new Exception("No hay más registros para consultar");
+                throw new Exception("There are no more records to consult");
             }
             
-            foreach (var item in dataApiExterna.Users)
+            foreach (var item in dataExternalApi.Users)
             {
                 var newUser = new UserEntity();
                 newUser.FirstName = item.FirstName;

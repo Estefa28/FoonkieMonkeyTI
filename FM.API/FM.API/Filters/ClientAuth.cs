@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 namespace FM.API.Filters
 {
     /// <summary>
-    /// Valida que las credenciales enviadas por el usuario coincidan con las establecidas
+    /// Validates that the credentials sent by the user match those established
     /// </summary>
     public class ClientAuth : ActionFilterAttribute
     {
@@ -21,7 +21,7 @@ namespace FM.API.Filters
                 auth.ClientSecret != headers["client_secret"])
             {
                 context.HttpContext.Response.StatusCode = 401;
-                await context.HttpContext.Response.WriteAsync("No autorizado");
+                await context.HttpContext.Response.WriteAsync("Not authorized");
                 return;
             }
 

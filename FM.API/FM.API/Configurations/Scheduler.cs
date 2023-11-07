@@ -1,8 +1,8 @@
 ﻿namespace FM.API.Configurations
 {
     /// <summary>
-    /// Información de Intervalos de tiempo para la tarea programada 
-    /// basada en la sección "Scheduler" dentro del appsettings.json
+    /// Time Interval information for the scheduled task
+    /// based on the "Scheduler" section within the appsettings.json
     /// </summary>
     public class Scheduler
     {

@@ -9,12 +9,17 @@ namespace FM.External.API.Implementation
         const string UrlAPI = "https://reqres.in/api/";
         const string GetUsersEndpoint = "users?page=";
 
+        private readonly HttpClient _httpClient;
+
+        public UserAPI()
+        {
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri(UrlAPI);
+        }
+
         public async Task<UserResponse> GetUsersAsync(int page)
         {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(UrlAPI);
-
-            var response = await client.GetAsync($"{GetUsersEndpoint}{page}");
+            var response = await _httpClient.GetAsync($"{GetUsersEndpoint}{page}");
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();

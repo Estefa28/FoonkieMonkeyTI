@@ -1,10 +1,7 @@
-﻿using FM.API.Configurations;
-using FM.API.Filters;
+﻿using FM.API.Filters;
 using FM.Domain.Models;
 using FM.EntityFramework.Interfaces;
-using FM.External.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace FM.API.Controllers
 {
@@ -12,65 +9,61 @@ namespace FM.API.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserAPI _userApi;
         private readonly IUserRepository _userRepository;
-        private Auth _auth;
         
-        public UsersController(IUserAPI userService, IUserRepository userRepository, IOptions<Auth> auth)
+        public UsersController(IUserRepository userRepository)
         {
-            _userApi = userService;
             _userRepository = userRepository;
-            _auth = auth.Value;
         }
 
         /// <summary>
-        /// Obtener lista de todos los Usuarios registrados.
+        /// Get list of all registered Users
         /// </summary>
-        /// <param name="page">Número de la pagina a solicitar</param>
-        /// <param name="pageSize">Cantidad de registros por pagina</param>
+        /// <param name="page">Page number to request</param>
+        /// <param name="pageSize">Number of records per page</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<UserEntity>>> GetAllUsersAsync(int page = 1, int pageSize = 5)
+        public ActionResult<List<UserEntity>> GetAllUsersAsync(int page = 1, int pageSize = 5)
         {
             var response = _userRepository.GetAll(page, pageSize);
             return Ok(response);
         }
 
         /// <summary>
-        /// Obtener datos del Usuario registrado filtrando por Id. 
+        /// Get data from the registered User by filtering by Id 
         /// </summary>
-        /// <param name="id">Id del Usuario</param>
+        /// <param name="id">User Id</param>
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
         [ClientAuth]
-        public async Task<ActionResult<UserEntity>> GetUserByIdAsync(int id)
+        public ActionResult<UserEntity> GetUserByIdAsync(int id)
         {
             var response = _userRepository.Search(id);
             return Ok(response);
         }
 
         /// <summary>
-        /// Crear nuevo usuario
+        /// Create new user
         /// </summary>
-        /// <param name="request">Información del Usuario a crear</param>
+        /// <param name="request">User information to create</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<UserEntity>> CreateUserAsync([FromBody] UserEntity request)
+        public ActionResult<UserEntity> CreateUserAsync([FromBody] UserEntity request)
         {
             var response = _userRepository.Add(request);
             return Ok(response);
         }
 
         /// <summary>
-        /// Modificar datos de un Usuario existente, filtro por el Id. 
+        /// Modify data of an existing User, filter by Id
         /// </summary>
-        /// <param name="id">Id del Usuario</param>
-        /// <param name="request">Datos del Usuario a modificar</param>
+        /// <param name="id">User Id</param>
+        /// <param name="request">User data to modify</param>
         /// <returns></returns>
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<UserEntity>> UpdateUserAsync(int id, [FromBody] UserEntity request)
+        public ActionResult<UserEntity> UpdateUserAsync(int id, [FromBody] UserEntity request)
         {
             request.Id = id;
             var response = _userRepository.Update(request);

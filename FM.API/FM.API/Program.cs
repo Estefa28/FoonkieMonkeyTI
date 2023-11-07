@@ -29,21 +29,21 @@ namespace FM.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
 
-            // Configuración de Documentación OpenAPI
+            // OpenAPI Documentation Configuration
             builder.Services.AddSwaggerGen(options =>
             {
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
-            // Configuración de Secciones appsettings.json
+            // Section Settings appsettings.json
             builder.Services.Configure<Auth>(
                 builder.Configuration.GetSection(Auth.AuthSection));
 
             builder.Services.Configure<Scheduler>(
                 builder.Configuration.GetSection(Scheduler.SchedulerSection));
 
-            // Configuración de Entity Framework
+            // Entity Framework Configuration
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DB"),
                 sqloption =>
@@ -54,10 +54,10 @@ namespace FM.API
 
             builder.Services.AddTransient<IUserRepository, UserRepository>();
 
-            // Inyección dependencias de API Externa
+            // External API dependency injection
             builder.Services.AddSingleton<IUserAPI, UserAPI>();
 
-            // Inyección dependencia capa Business
+            // Business layer dependency injection
             builder.Services.AddTransient<IUserService, UserService>();
 
             var app = builder.Build();
@@ -84,7 +84,7 @@ namespace FM.API
         }
 
         /// <summary>
-        /// Iniciar un Timer para ejecutar una tarea cada cierto tiempo
+        /// Start a Timer to execute a task every so often
         /// </summary>
         private static void InitExternalAPI()
         {
@@ -94,8 +94,8 @@ namespace FM.API
         }
 
         /// <summary>
-        /// Consulta cada página trayendo los registros encontrados de la API Externa y los almacena en
-        /// la base de datos
+        /// Queries each page bringing the records found from the External API and stores them in
+        /// the database
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -103,15 +103,15 @@ namespace FM.API
         {
             try
             {
-                Console.WriteLine("Consultando");
+                Console.WriteLine("Fetching");
                 await _userService.UpdateDatabaseAsync(_pageAPI);
-                Console.WriteLine($"Registros obtenidos de la pagina {_pageAPI}");
+                Console.WriteLine($"Records obtained from the page {_pageAPI}");
                 _pageAPI++;
             }
             catch (Exception)
             {
                 _timerExternalAPI.Enabled = false;
-                Console.WriteLine("No hay más registros para consultar");
+                Console.WriteLine("No records found");
             }
         }
     }
