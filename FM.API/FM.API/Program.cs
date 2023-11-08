@@ -9,6 +9,7 @@ using System.Reflection;
 using FM.Business.Interfaces;
 using FM.Business.Services;
 using Microsoft.Extensions.Options;
+using FM.Business.Profiles;
 
 namespace FM.API
 {
@@ -51,6 +52,8 @@ namespace FM.API
                     sqloption.EnableRetryOnFailure(3);
                     sqloption.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName);
                 }));
+
+            builder.Services.AddAutoMapper(typeof(ExternalApiProfile));
 
             builder.Services.AddTransient<IUserRepository, UserRepository>();
 

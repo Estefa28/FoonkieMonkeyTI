@@ -1,4 +1,5 @@
-﻿using FM.Business.Interfaces;
+﻿using AutoMapper;
+using FM.Business.Interfaces;
 using FM.Domain.Models;
 using FM.EntityFramework.Interfaces;
 using FM.External.API.Interfaces;
@@ -9,11 +10,13 @@ namespace FM.Business.Services
     {
         private readonly IUserAPI _userAPI;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserAPI userAPI, IUserRepository userRepository)
+        public UserService(IUserAPI userAPI, IUserRepository userRepository, IMapper mapper)
         {
             _userAPI = userAPI;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task UpdateDatabaseAsync(int page)
@@ -27,13 +30,7 @@ namespace FM.Business.Services
             
             foreach (var item in dataExternalApi.Users)
             {
-                var newUser = new UserEntity();
-                newUser.FirstName = item.FirstName;
-                newUser.LastName = item.LastName;   
-                newUser.Email = item.Email;
-                newUser.Avatar = item.Avatar;
-
-                _userRepository.Add(newUser);
+                _userRepository.Add(_mapper.Map<UserEntity>(item));
             }
         }
     }
